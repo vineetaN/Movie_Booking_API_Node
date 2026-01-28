@@ -1,0 +1,18 @@
+{
+  "name": "project-movie-booking-backend-app",
+  "version": "1.0.0",
+  "description": "This is a backend API application for Movie Booking , similar to BookMyShow.",
+  "main": "index.js",
+  "scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vineeta",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^8.22.0"
+  }
+}
