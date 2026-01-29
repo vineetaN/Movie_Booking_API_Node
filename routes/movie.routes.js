@@ -5,7 +5,7 @@ const routes = (app) => {
   //routes function take express app object as parameter
   app.post('/mba/api/v1/movies' , movieController.createMovie);
 
-  app.delete('/mba/api/v1/movies/:movieId',
+  app.delete('/mba/api/v1/movies/:id',
     movieController.deleteMovie
   )
 
