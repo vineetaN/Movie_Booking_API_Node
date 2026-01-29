@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const env = require('dotenv');
 const mongoose = require('mongoose');
+const Movie = require('./models/movie.model');
 
 env.config();
 const app = express();   //express object
@@ -22,8 +23,17 @@ app.listen(process.env.PORT , async ()=>{
 
   try{
  await mongoose.connect(process.env.DB_URL);
-  console.log("successfully connected to mongo")
-
+  console.log("successfully connected to mongo");
+//   await Movie.create({
+//     name:"b p",
+//     description : "com mas",
+//     casts: ["ak g" , "k s"],
+// director : "f s",
+// trailerUrl: "http://",
+// language:"hindi",
+// releaseDate:"18-03-2022",
+// releaseStatus:"RELEASED"
+//   });
   }
   catch(err)
   {
