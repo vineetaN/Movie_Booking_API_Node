@@ -1,8 +1,23 @@
 const Movie = require('../models/movie.model');
 
 const createMovie = async(data) => {
-  const movie = await Movie.create(data);
+  try {
+    const movie = await Movie.create(data);
   return movie;
+  } catch (error) {
+    if(error.name=='ValidationError'){
+let err = {};
+Object.keys(error.errors).forEach((key)=>{
+  err[key] = error.errors[key].message;
+});
+console.log(err);
+return {err :err , code : 422};
+    }
+    else {
+    throw error;
+    }
+  }
+  
 }
 
 
@@ -25,8 +40,31 @@ const getMovieById = async (id) => {
   return movie;
 }
 
+
+const updateMovie = async (id , data) => {
+
+  try {
+    const movie = await Movie.findByIdAndUpdate(id , data , {new: true , runValidators: true});
+    return movie ;
+  } catch (error) {
+     if(error.name=='ValidationError'){
+let err = {};
+Object.keys(error.errors).forEach((key)=>{
+  err[key] = error.errors[key].message;
+});
+console.log(err);
+return {err :err , code : 422};
+    }
+    else {
+    throw error;
+    }
+  }
+  
+}
+
 module.exports = {
   getMovieById,
   createMovie,
-  deleteMovie
+  deleteMovie,
+  updateMovie
 }

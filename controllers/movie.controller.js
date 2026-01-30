@@ -8,8 +8,15 @@ const {errorResponseBody , successResponseBody} = require('../utils/responsebody
 
 const createMovie = async (req , res) => {
    try{
-   const movie = await movieService.createMovie(req.body);
-  successResponseBody.data= movie;
+   const response = await movieService.createMovie(req.body);
+   if(response.err)
+   {
+ errorResponseBody.err = response.err;
+
+ errorResponseBody.message = "Validation failed on few parameters of the request body"
+ return res.status(response.code).json(errorResponseBody)
+   }
+  successResponseBody.data= response;
   successResponseBody.message = "Successfully created the movie"
     return res.status(201).json(successResponseBody)
    } catch(err)
@@ -54,8 +61,27 @@ const getMovie = async (req,res) => {
 
 
 
+const updateMovie = async (req , res) => {
+  try {
+    const response = await movieService.updateMovie(req.params.id , req.body);
+    if(response.err){
+      errorResponseBody.err = response.err;
+      errorResponseBody.message = "The updates that we are trying to apply doesn't validates the schema."
+      return res.status(response.code).json(errorResponseBody);
+    }
+    successResponseBody.data = response;
+    return res.status(200).json(successResponseBody);
+  } catch (err) {
+    console.log(err);
+    errorResponseBody.err = err;
+    return res.status(500).json(errorResponseBody);
+  }
+}
+
+
 module.exports = {
   createMovie,
   deleteMovie,
-  getMovie
+  getMovie,
+  updateMovie
 }
