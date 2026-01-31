@@ -15,7 +15,7 @@ const movieSchema = new mongoose.Schema({
   },
   casts:{
     type: [String],
-    required:true
+    required:true 
   },
   trailerUrl:{
     type:String,
