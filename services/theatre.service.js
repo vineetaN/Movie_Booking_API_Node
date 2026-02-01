@@ -78,9 +78,31 @@ const getTheatre = async (id) => {
  * @returns data - the data is going to be the data used to filter out theatres based on city / pincode 
  * returns an object with the filtered content of theatres
  */
-const getAllTheatres = async () => {
+// const getAllTheatres = async () => {
+//   try {
+//     const response = await Theatre.find({})
+//     return response;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// }
+const getAllTheatres = async(data) => {
   try {
-    const response = await Theatre.find({})
+    let query = {};
+    if(data && data.city) {
+      //check whether city is present in query param
+      query.ctiy = data.city;
+    }
+     if(data && data.pincode){
+      //whether pin code is present in query param
+      query.pincode = data.pincode;
+    }
+    if(data && data.name){
+      //checks whther name is present in qeury params
+      query.name = data.name;
+    }
+    const response = await Theatre.find(query);
     return response;
   } catch (error) {
     console.log(error);
