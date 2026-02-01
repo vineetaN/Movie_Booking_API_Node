@@ -1,5 +1,11 @@
 const Theatre = require("../models/theatre.model");
 
+/**
+ * 
+ * @param {*} data - object containing the details of the theatre to be created
+ * @returns - object with the new theatres detail 
+ */
+
 const createTheatre = async (data) => {
   try {
     const response = await Theatre.create(data);
@@ -18,6 +24,13 @@ const createTheatre = async (data) => {
   }
 }
 
+
+
+/**
+ * 
+ * @param {*} id  - the unique id using which we can identify the theatre to be deleted 
+ * @returns - the deleted theatre object
+ */
 const deleteTheatre = async (id) => {
   try {
     const response = await Theatre.findByIdAndDelete(id);
@@ -36,6 +49,11 @@ const deleteTheatre = async (id) => {
 
 
 //id = theatre id
+/**
+ * 
+ * @param {*} id - unique id based on which we will fetch a theatre
+ * @returns 
+ */
 
 const getTheatre = async (id) => {
   try {
@@ -55,6 +73,11 @@ const getTheatre = async (id) => {
   } 
 }
 
+/**
+ * 
+ * @returns data - the data is going to be the data used to filter out theatres based on city / pincode 
+ * returns an object with the filtered content of theatres
+ */
 const getAllTheatres = async () => {
   try {
     const response = await Theatre.find({})
@@ -64,6 +87,15 @@ const getAllTheatres = async () => {
     throw error;
   }
 }
+
+
+
+
+/**
+ * id - unique id to indentiyf the theatre to be updates
+ * data - data to be used to update teh theatre 
+ * return - it returns the new updated theatre object 
+ */
 
 module.exports = {
 createTheatre,

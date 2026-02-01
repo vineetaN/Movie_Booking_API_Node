@@ -16,12 +16,7 @@ app.use(bodyParser.json());
 MovieRoutes(app); // invoking movie routes
 theatreRoutes(app) //invoking theatre routes
 
-app.get('/home' , (req,res)=>{
-  console.log("hitting /home")
-  return res.json({
-    success:true
-  })
-})
+
 
 app.listen(process.env.PORT , async ()=>{
   //this callback gets executed , once we successfully start the server on the given port
@@ -30,16 +25,7 @@ app.listen(process.env.PORT , async ()=>{
   try{
  await mongoose.connect(process.env.DB_URL);
   console.log("successfully connected to mongo");
-//   await Movie.create({
-//     name:"b p",
-//     description : "com mas",
-//     casts: ["ak g" , "k s"],
-// director : "f s",
-// trailerUrl: "http://",
-// language:"hindi",
-// releaseDate:"18-03-2022",
-// releaseStatus:"RELEASED"
-//   });
+
   }
   catch(err)
   {

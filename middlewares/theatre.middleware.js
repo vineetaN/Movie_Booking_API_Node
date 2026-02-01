@@ -1,5 +1,16 @@
 const {errorResponseBody} = require("../utils/responsebody")
 
+
+
+/**
+ * 
+ * @param {*} req - HTTP req obje
+ * @param {*} res - HTTP response obje
+ * @param {*} next - next middleware function 
+ * @returns - whether the request is valid or not 
+ */
+
+
 const validateTheatreCreateRequest = async (req , res , next) => {
 
   if(!req.body.name)

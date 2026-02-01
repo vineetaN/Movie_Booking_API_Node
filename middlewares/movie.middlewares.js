@@ -5,6 +5,14 @@ const badRequestResponse = {
       message : "Malformed request | bad request"
 }
 
+/**
+ * 
+ * @param {*} req - HTTP req obje
+ * @param {*} res - HTTP response obje
+ * @param {*} next - next middleware function 
+ * @returns - whether the request is valid or not 
+ */
+
 const validateMovieCreateReques = async (req , res , next) => {
    //validate the movie name
    if(!req.body.name){
