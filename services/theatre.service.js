@@ -97,9 +97,65 @@ const getAllTheatres = async () => {
  * return - it returns the new updated theatre object 
  */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ * @param {*} theatreId - unique id of the theatre for which we want to update movies
+ * @param {*} movieIds - array of movie ids that is expexted ot be update in theatre
+ * @param {*} insert - boolean that tell whther we want to insert movies or remove them 
+ * @returns - updates theatre object
+ */
+
+const updateMoviesInTheatres = async (theatreId , movieIds , insert) => {
+  const theatre = await Theatre.findById(theatreId);
+  if(!theatre)
+  {
+    return {
+      err : " No such theatre found for the id provided",
+      code : 404
+    };
+  }
+   if(insert){
+    //we need to add movies
+    movieIds.forEach(movieId => {
+      theatre.movies.push(movieId);
+    })
+   }
+   else{
+   // we need to remove movies
+   //we are going to loop each movie id that was provided in movieid and for each movieid will check if its there in theatre movie id 
+   let savedMovieIds = theatre.movies;
+   movieIds.forEach(movieId => {
+    //filter keep those in the array for which condition meets 
+    savedMovieIds = savedMovieIds.filter(smi => smi != movieId);
+   })
+   theatre.movies = savedMovieIds;
+   }
+
+   //.save is very imp as it will do the changes in the db
+   await theatre.save();
+
+   //.populate will use movies array to find corresponding id and will show in theatre object
+   return theatre.populate('movies');
+}
+
 module.exports = {
 createTheatre,
 deleteTheatre,
 getTheatre,
-getAllTheatres
+getAllTheatres,
+updateMoviesInTheatres
 }
