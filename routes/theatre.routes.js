@@ -32,10 +32,17 @@ const routes = (app) => {
 
 
 
+//update
+app.patch(
+  "/mba/api/v1/theatres/:id",
+  theatreController.update
+)
 
-
-
-
+//update
+app.put(
+  "/mba/api/v1/theatres/:id",
+  theatreController.update
+)
 
 
 

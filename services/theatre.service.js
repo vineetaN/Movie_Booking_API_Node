@@ -132,7 +132,30 @@ const getAllTheatres = async(data) => {
  * return - it returns the new updated theatre object 
  */
 
-
+const updateTheatre = async (id , data) => {
+  try {
+    const response = await Theatre.findByIdAndUpdate(id , data ,
+       {new : true , runValidators:true
+       });
+        if(!response){
+      return{
+       err : "No record of the theatre found for the given id",
+      code : 404
+      }
+    }
+    return response;
+  } catch (error) {
+    if(error.name == "ValidationError")
+    {
+       let err = {};
+      Object.keys(error.errors).forEach((key) => {
+        err[key] = error.errors[key].message;
+      });
+      return {err:err , code:422};
+    }
+    throw error;  //mostly internal server error
+  }
+}
 
 
 
@@ -190,6 +213,7 @@ const updateMoviesInTheatres = async (theatreId , movieIds , insert) => {
 module.exports = {
 createTheatre,
 deleteTheatre,
+updateTheatre,
 getTheatre,
 getAllTheatres,
 updateMoviesInTheatres
