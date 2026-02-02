@@ -178,36 +178,56 @@ const updateTheatre = async (id , data) => {
  */
 
 const updateMoviesInTheatres = async (theatreId , movieIds , insert) => {
-  const theatre = await Theatre.findById(theatreId);
-  if(!theatre)
-  {
-    return {
-      err : " No such theatre found for the id provided",
-      code : 404
-    };
-  }
-   if(insert){
-    //we need to add movies
-    movieIds.forEach(movieId => {
-      theatre.movies.push(movieId);
-    })
+  try {
+     if(insert){
+    //we need to add movie
+    // movieIds.forEach(movieId => {
+    //   theatre.movies.push(movieId);
+    // })
+    //addtoset - becsuse we want to remove duplicates 
+    await Theatre.updateOne(
+        {_id : theatreId},
+        {$addToSet: {movies: {$each:movieIds}}}
+      
+    )
+   
    }
    else{
    // we need to remove movies
    //we are going to loop each movie id that was provided in movieid and for each movieid will check if its there in theatre movie id 
-   let savedMovieIds = theatre.movies;
-   movieIds.forEach(movieId => {
-    //filter keep those in the array for which condition meets 
-    savedMovieIds = savedMovieIds.filter(smi => smi != movieId);
-   })
-   theatre.movies = savedMovieIds;
+  //  let savedMovieIds = theatre.movies;
+  //  movieIds.forEach(movieId => {
+  //   //filter keep those in the array for which condition meets 
+  //   savedMovieIds = savedMovieIds.filter(smi => smi != movieId);
+  //  })
+  //  theatre.movies = savedMovieIds;
+
+
+  await Theatre.updateOne(
+    {_id : theatreId},
+    {$pull: {movies: {$in : movieIds}}}
+  );
    }
 
-   //.save is very imp as it will do the changes in the db
-   await theatre.save();
 
+    const theatre = await Theatre.findById(theatreId)
    //.populate will use movies array to find corresponding id and will show in theatre object
-   return theatre.populate('movies');
+  return theatre.populate('movies')
+  } catch (error) {
+    if(error.name == "TypeError"){
+      return {
+        code : 404,
+        err : " No theatre found for the given id"
+      }
+    }
+    console.log(error);
+    throw(error);
+  }
+  
+
+   //.save is very imp as it will do the changes in the db
+   //await theatre.save();
+   
 }
 
 module.exports = {
