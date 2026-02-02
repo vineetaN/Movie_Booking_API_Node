@@ -90,9 +90,12 @@ const getTheatre = async (id) => {
 const getAllTheatres = async(data) => {
   try {
     let query = {};
+    let pagination = {};
+
+
     if(data && data.city) {
       //check whether city is present in query param
-      query.ctiy = data.city;
+      query.city= data.city;
     }
      if(data && data.pincode){
       //whether pin code is present in query param
@@ -102,7 +105,17 @@ const getAllTheatres = async(data) => {
       //checks whther name is present in qeury params
       query.name = data.name;
     }
-    const response = await Theatre.find(query);
+    if(data && data.limit){
+      pagination.limit = data.limit
+    }
+    if(data && data.skip)
+      { 
+        let perPage = (data.limit) ? data.limit : 3;
+        pagination.skip = data.skip * perPage;
+       
+      }
+    
+    const response = await Theatre.find(query , {} , pagination);
     return response;
   } catch (error) {
     console.log(error);
