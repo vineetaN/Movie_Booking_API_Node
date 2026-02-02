@@ -92,7 +92,7 @@ const getAllTheatres = async(data) => {
     let query = {};
     let pagination = {};
 
-
+//may be becasue data may be there or not
     if(data && data.city) {
       //check whether city is present in query param
       query.city= data.city;
@@ -120,7 +120,7 @@ const getAllTheatres = async(data) => {
   } catch (error) {
     console.log(error);
     throw error;
-  }
+  }  
 }
 
 
