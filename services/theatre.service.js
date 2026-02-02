@@ -179,17 +179,19 @@ const updateTheatre = async (id , data) => {
 
 const updateMoviesInTheatres = async (theatreId , movieIds , insert) => {
   try {
+    let theatre;
      if(insert){
     //we need to add movie
     // movieIds.forEach(movieId => {
     //   theatre.movies.push(movieId);
     // })
     //addtoset - becsuse we want to remove duplicates 
-    await Theatre.updateOne(
+    theatre = await Theatre.findByIdAndUpdate(
         {_id : theatreId},
-        {$addToSet: {movies: {$each:movieIds}}}
+        {$addToSet: {movies: {$each:movieIds}}},
+        {new : true}
       
-    )
+    );
    
    }
    else{
@@ -203,14 +205,15 @@ const updateMoviesInTheatres = async (theatreId , movieIds , insert) => {
   //  theatre.movies = savedMovieIds;
 
 
-  await Theatre.updateOne(
+  theatre = await Theatre.findByIdAndUpdate(
     {_id : theatreId},
-    {$pull: {movies: {$in : movieIds}}}
+    {$pull: {movies: {$in : movieIds}}},
+    {new:true}
   );
    }
 
 
-    const theatre = await Theatre.findById(theatreId)
+    
    //.populate will use movies array to find corresponding id and will show in theatre object
   return theatre.populate('movies')
   } catch (error) {
