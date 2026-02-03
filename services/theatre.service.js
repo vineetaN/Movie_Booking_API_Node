@@ -1,4 +1,5 @@
 const Theatre = require("../models/theatre.model");
+const Movie = require("../models/movie.model")
 
 /**
  * 
@@ -105,15 +106,25 @@ const getAllTheatres = async(data) => {
       //checks whther name is present in qeury params
       query.name = data.name;
     }
+
+    // this is to find all the theatres in which that particular movied is present 
+    //query.movies - movies becasue in theatres we are sotring id in the name movies
+     if(data && data.movieId){
+      query.movies = {$all : data.movieId}
+     }
+
     if(data && data.limit){
       pagination.limit = data.limit
     }
+
+   
     if(data && data.skip)
       { 
         let perPage = (data.limit) ? data.limit : 3;
         pagination.skip = data.skip * perPage;
        
       }
+    
     
     const response = await Theatre.find(query , {} , pagination);
     return response;
