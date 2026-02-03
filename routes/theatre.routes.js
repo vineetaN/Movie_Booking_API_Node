@@ -56,6 +56,11 @@ app.get(
     theatreMiddleware.validateUpdateMoviesRequest,
     theatreController.updateMovies
   )
+
+  app.get(
+    '/mba/api/v1/theatres/:theatreId/movies/:movieId',
+    theatreController.checkMovie
+  )
 }
 
 module.exports = routes;
