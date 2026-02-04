@@ -52,5 +52,18 @@ userSchema.pre('save' , async function (next){
   next();
 })
 
+
+/**
+ * instance method for user to compare the password with the stored encrypted password
+ * @param {*} plainPassword - input password given by user in signin rquest
+ * @returns boolean denoting whether password is same or not
+ */
+
+userSchema.methods.isVaildPassword = async (plainPassword) => {
+  const currentUser = this;
+  const compare = await bcrypt.compare(plainPassword , currentUser.password);
+  return compare;
+}
+
 const User = mongoose.model('User' , userSchema);
 module.exports = User;
