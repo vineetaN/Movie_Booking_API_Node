@@ -32,5 +32,4 @@ app.listen(process.env.PORT , async ()=>{
   {
     console.log("not bale to connect mongo" , err);
   }
-
 })
