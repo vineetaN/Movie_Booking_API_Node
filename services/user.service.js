@@ -1,5 +1,5 @@
 const User = require("../models/user.model");
-const {USER_ROLE , USER_STATUS} = require("../utils/constraints")
+const {USER_ROLE , USER_STATUS , STATUS_CODES} = require("../utils/constraints")
 
 const createUser  = async (data) => {
   try {
@@ -77,7 +77,7 @@ const updateUserRoleOrStatus = async (data , userId) => {
   console.log(response);
   if(!response)
   {
-    throw {err: "No user found for the given id" , code:404};
+    throw {err: "No user found for the given id" , code:STATUS_CODES.NOT_FOUND};
   }
   return response;
   } catch (error) {
@@ -88,7 +88,7 @@ const updateUserRoleOrStatus = async (data , userId) => {
       Object.keys(error.errors).forEach(key => {
         err[key] = error.errors[key].message;
       })
-      throw {err: err , code:400};
+      throw {err: err , code:STATUS_CODES.BAD_REQUEST};
     }
     throw error;
   }
