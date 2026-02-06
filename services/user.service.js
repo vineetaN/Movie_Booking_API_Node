@@ -68,9 +68,9 @@ const updateUserRoleOrStatus = async (data , userId) => {
     {
       updateQuery.userStatus = data.userStatus;
     }
-    let response = await User.findOneAndUpdate({
-      _id:userId
-    } , 
+    let response = await User.findByIdAndUpdate(
+      userId
+    , 
     updateQuery , {new : true , runValidators:true}
   );
   //console.log(userId);
