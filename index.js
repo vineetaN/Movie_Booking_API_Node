@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const MovieRoutes = require('./routes/movie.routes')
 const theatreRoutes = require("./routes/theatre.routes");
+const authRoutes = require("./routes/auth.routes");
+const userRoutes = require("./routes/user.routes")
 
 env.config();
 const app = express();   //express object
@@ -15,7 +17,8 @@ app.use(bodyParser.json());
 
 MovieRoutes(app); // invoking movie routes
 theatreRoutes(app) //invoking theatre routes
-
+authRoutes(app); //invoking auth routes
+userRoutes(app); //invoking user routes
 
 
 app.listen(process.env.PORT , async ()=>{
@@ -31,5 +34,4 @@ app.listen(process.env.PORT , async ()=>{
   {
     console.log("not bale to connect mongo" , err);
   }
-
 })
