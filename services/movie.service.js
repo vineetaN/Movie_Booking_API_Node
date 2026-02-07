@@ -1,4 +1,5 @@
 const Movie = require('../models/movie.model');
+const {STATUS_CODES} = require("../utils/constraints")
 
 
 //parameter - data = object containing details of the new movie to be created.
@@ -14,7 +15,7 @@ Object.keys(error.errors).forEach((key)=>{
   err[key] = error.errors[key].message;
 });
 console.log(err);
-return {err :err , code : 422};
+throw {err :err , code : STATUS_CODES.UNPROCESSABLE_ENTITY};
     }
     else {
     throw error;

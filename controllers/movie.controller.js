@@ -1,6 +1,9 @@
 const Movie = require('../models/movie.model');
 const movieService = require("../services/movie.service");
 const {errorResponseBody , successResponseBody} = require('../utils/responsebody');
+const {STATUS_CODES} = require("../utils/constraints");
+
+
 //controller function to create a new movie
 
 
@@ -9,20 +12,20 @@ const {errorResponseBody , successResponseBody} = require('../utils/responsebody
 const createMovie = async (req , res) => {
    try{
    const response = await movieService.createMovie(req.body);
-   if(response.err)
-   {
- errorResponseBody.err = response.err;
-
- errorResponseBody.message = "Validation failed on few parameters of the request body"
- return res.status(response.code).json(errorResponseBody)
-   }
+   
   successResponseBody.data= response;
   successResponseBody.message = "Successfully created the movie"
-    return res.status(201).json(successResponseBody)
-   } catch(err)
+    return res.status(STATUS_CODES.CREATED).json(successResponseBody)
+   } catch(error)
    {
+   if(error.err)
+    {
+      errorResponseBody.err= error.err;
+      return res.status(error.code).json(errorResponseBody);
+    } 
 console.log(err);
-return res.status(500).json(errorResponseBody);
+errorResponseBody.err = error;
+return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json(errorResponseBody);
    }
 }
 
