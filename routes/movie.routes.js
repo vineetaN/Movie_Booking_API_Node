@@ -1,11 +1,15 @@
 const movieController = require('../controllers/movie.controller')
 const MovieMiddlewares = require("../middlewares/movie.middlewares")
+const authMiddlewares = require("../middlewares/auth.middlewares")
 
 const routes = (app) => {
   //routes function take express app object as parameter
 
   //create
-  app.post('/mba/api/v1/movies' ,MovieMiddlewares.validateMovieCreateReques ,  movieController.createMovie);
+  app.post('/mba/api/v1/movies' ,
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
+    MovieMiddlewares.validateMovieCreateReques ,  movieController.createMovie);
 
   //delete
   app.delete('/mba/api/v1/movies/:id',
