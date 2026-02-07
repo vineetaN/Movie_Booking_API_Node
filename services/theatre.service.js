@@ -1,6 +1,6 @@
 const Theatre = require("../models/theatre.model");
 const Movie = require("../models/movie.model")
-
+const {STATUS_CODES} = require("../utils/constraints")
 /**
  * 
  * @param {*} data - object containing the details of the theatre to be created
@@ -18,7 +18,7 @@ const createTheatre = async (data) => {
       Object.keys(error.errors).forEach((key) => {
         err[key] = error.errors[key].message;
       });
-      return {err:err , code:422};
+      throw {err:err , code:STATUS_CODES.UNPROCESSABLE_ENTITY};
     }
     console.log(err);
     throw err;
