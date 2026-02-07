@@ -57,9 +57,9 @@ const getMovieById = async (id) => {
  // console.log(movie);
   if(!movie)
   {
-    return {
+    throw {
     err : "No movie found for the correponding id provided",
-    code : 404,
+    code : STATUS_CODES.NOT_FOUND,
     
     }
   };
@@ -109,9 +109,9 @@ query.name = filter.name;
     let movies = await Movie.find(query);
     if(!movies)
     {
-      return {
+      throw{
         err : "Not able to find the queries movies",
-        code : 404
+        code : STATUS_CODES.NOT_FOUND
       }
     }
     return movies;
