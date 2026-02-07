@@ -13,6 +13,8 @@ const routes = (app) => {
 
   //delete
   app.delete('/mba/api/v1/movies/:id',
+    authMiddlewares.isAuthenticated,
+    authMiddlewares.isAdminOrClient,
     movieController.deleteMovie
   )
 
