@@ -1,7 +1,8 @@
-const {STATUS_CODES} = require("../utils/constraints")
+const {STATUS_CODES , USER_ROLE , BOOKING_STATUS} = require("../utils/constraints")
 const{successResponseBody, errorResponseBody} = require("../utils/responsebody")
 const ObjectId = require("mongoose").Types.ObjectId
 const theatreService = require("../services/theatre.service")
+const userService = require("../services/user.service")
 
 
 const validateBookingCreateRequest = async (req , res , next) => {
@@ -61,6 +62,19 @@ next();
 
 }
 
+//if normal customer is doing naything arapt from cancellation . they should not be allowed to do that
+const canChangeStatus = async (req,res,next) => {
+       const user = await userService.getUserById(req.user);
+       if(user.userRole == USER_ROLE.customer && req.body.status && req.body.status != BOOKING_STATUS.cancelled)
+       {
+        errorResponseBody.err = "You are not allowed to change the booking status"
+        return res.status(STATUS_CODES.UNAUTHORISED).json(errorResponseBody)
+       }
+       next();
+
+}
+
 module.exports = {
-validateBookingCreateRequest
+validateBookingCreateRequest ,
+canChangeStatus
 }

@@ -11,6 +11,14 @@ app.post(
   bookingMiddleware.validateBookingCreateRequest,
   bookingController.create
 )
+
+
+app.patch(
+  "/mba/api/v1/bookings/:id",
+  authMiddleware.isAuthenticated,
+  bookingMiddleware.canChangeStatus ,
+  bookingController.update
+);
 }
 
 
