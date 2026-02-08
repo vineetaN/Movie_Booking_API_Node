@@ -46,6 +46,16 @@ const validateCreateShowRequest = async (req , res , next) => {
     
   }
 
+  const validateShowUpdateRequest = async (req,res,next) => {
+    if(req.body.theatreId || req.body.movieId)
+    {
+      errorResponseBody.err = "We cannot update theatre or movie for an already added show";
+      return res.status(STATUS_CODES.BAD_REQUEST).json(errorResponseBody)
+    }
+    next();
+  }
+
   module.exports = {
-    validateCreateShowRequest
+    validateCreateShowRequest,
+    validateShowUpdateRequest
   }
