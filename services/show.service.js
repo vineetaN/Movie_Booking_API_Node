@@ -44,6 +44,33 @@ const createShow = async (data) => {
   }
 }
 
+
+const getShows = async (data) => {
+  try {
+    let filter = {};
+    if(data.theatreId)
+    {
+      filter.theatreId = data.theatreId
+    }
+    if(data.movieId)
+    {
+      filter.movieId = data.movieId
+    }
+    const response = await Show.find(filter);
+    if(!response)
+    {
+      throw {
+        err : " No shows found",
+        code : STATUS_CODES.NOT_FOUND
+      }
+    }
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
-  createShow
+  createShow,
+  getShows
 }

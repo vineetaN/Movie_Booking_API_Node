@@ -8,6 +8,24 @@ const create = async (req,res) => {
     const response = await showService.createShow(req.body);
     successResponseBody.message = "Successfully created the show";
     successResponseBody.data = response;
+    return res.status(STATUS_CODES.CREATED).json(successResponseBody)
+  } catch (error) {
+    if(error.err)
+    {
+      errorResponseBody.err = error.err;
+      return res.status(error.code).json(errorResponseBody)
+    }
+    errorResponseBody.err = error;
+return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json(errorResponseBody)
+  }
+}
+
+
+const getShows = async (req , res) => {
+  try {
+    const response = await showService.getShows(req.query);
+    successResponseBody.message = "Succesfully fetched the movie shows";
+    successResponseBody.data = response;
     return res.status(STATUS_CODES.OK).json(successResponseBody)
   } catch (error) {
     if(error.err)
@@ -16,10 +34,11 @@ const create = async (req,res) => {
       return res.status(error.code).json(errorResponseBody)
     }
     errorResponseBody.err = error;
-return res.status(STATUS_CODES.OK).json(errorResponseBody)
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR)
   }
 }
 
 module.exports = {
-  create
+  create,
+  getShows
 }
