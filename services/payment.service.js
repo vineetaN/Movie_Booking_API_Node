@@ -5,6 +5,13 @@ const { STATUS_CODES , BOOKING_STATUS, PAYMENT_STATUS} = require("../utils/const
 const createPayment = async (data) => {
   try {
     const booking = await Booking.findById(data.bookingId);
+    if(booking.status == BOOKING_STATUS.successfull)
+    {
+      throw {
+        err: "Booking laready done , cannot make a new payment agaiinst it",
+        code : STATUS_CODES.FORBIDDED
+      }
+    }
     if(!booking)
     {
       throw {
@@ -22,7 +29,7 @@ const createPayment = async (data) => {
     {
       booking.status = BOOKING_STATUS.expired;
       await booking.save();
-      await payment.save();
+      
       return booking;
     }
 
@@ -30,13 +37,16 @@ const createPayment = async (data) => {
     //hardocde
 
     const payment = await Payment.create({
-      bookingId : data.bookingId ,
+      booking: data.bookingId ,
       amount : data.amount
     });
+
+    console.log(payment)
 
    if(payment.amount != booking.totalCost)
    {
     payment.status = PAYMENT_STATUS.failed
+    await payment.save();
    }
 
 
@@ -50,6 +60,7 @@ const createPayment = async (data) => {
     booking.status = BOOKING_STATUS.successfull;
     await booking.save();
     await payment.save();
+    
     return booking;
 
 
@@ -61,6 +72,23 @@ const createPayment = async (data) => {
 }
 
 
+const getPaymentId = async (id) => {
+  try {
+    const response = await Payment.findById(id).populate("booking");
+    if(!response)
+    {
+      throw {
+        err : "No payment record found",
+        code : STATUS_CODES.NOT_FOUND
+      }
+    }
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
-  createPayment
+  createPayment,
+  getPaymentId
 }
