@@ -57,7 +57,7 @@ return res.status(STATUS_CODES.BAD_REQUEST.json(errorResponseBody))
   return res.status(STATUS_CODES.BAD_REQUEST).json(errorResponseBody)
  }
 
-
+console.log("H")
 next();
 
 }

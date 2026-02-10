@@ -2,10 +2,19 @@ const Payment = require("../models/payment.model");
 const Booking = require("../models/booking.model");
 const { STATUS_CODES , BOOKING_STATUS, PAYMENT_STATUS, USER_ROLE} = require("../utils/constraints");
 const User = require("../models/user.model")
+const Show = require("../models/show.model")
 
 const createPayment = async (data) => {
   try {
+    
     const booking = await Booking.findById(data.bookingId);
+    
+     const show = await Show.findOne({
+      movieId : booking.movieId , 
+      theatreId : booking.theatreId,
+      timing : booking.timings
+    });
+   
     if(booking.status == BOOKING_STATUS.successfull)
     {
       throw {
@@ -42,8 +51,6 @@ const createPayment = async (data) => {
       amount : data.amount
     });
 
-    console.log(payment)
-
    if(payment.amount != booking.totalCost)
    {
     payment.status = PAYMENT_STATUS.failed
@@ -55,10 +62,14 @@ const createPayment = async (data) => {
     {
       booking.status = BOOKING_STATUS.cancelled;
       await booking.save();
+      await payment.save();
       return booking;
     }
     payment.status = PAYMENT_STATUS.success;
     booking.status = BOOKING_STATUS.successfull;
+    show.noOfSeats -= booking.noOfSeats;
+
+    await show.save();
     await booking.save();
     await payment.save();
     
@@ -68,6 +79,7 @@ const createPayment = async (data) => {
 
 
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }
