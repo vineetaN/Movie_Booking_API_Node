@@ -77,6 +77,7 @@ const isAuthenticated = async(req , res,next) => {
 
   const user = await userService.getUserById(response.id)
   req.user = user.id;
+
   next();
   } catch (error) {
     if(error.name == "JsonWebTokenError"){
@@ -90,6 +91,7 @@ const isAuthenticated = async(req , res,next) => {
 errorResponseBody.err = error;
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json(errorResponseBody)
   }
+  
 }
 
 const validateRestPasswordRequest = (req , res, next) => {
@@ -104,15 +106,16 @@ const validateRestPasswordRequest = (req , res, next) => {
     return res.status(STATUS_CODES.BAD_REQUEST).json(errorResponseBody);
    
 
-    next();
+   
   }
+   next();
 }
 
 const isAdmin = async (req , res , next) => {
   const user = await userService.getUserById(req.user);
   if(user.userRole != USER_ROLE.admin)
   {
-    errorResponseBody.err = "user is no an admin , cannot proceed with the request"
+    errorResponseBody.err = "user is not an admin , cannot proceed with the request"
     return res.status(STATUS_CODES.UNAUTHORISED).json(errorResponseBody)
   }
   next();
