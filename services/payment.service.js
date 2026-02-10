@@ -4,6 +4,7 @@ const { STATUS_CODES , BOOKING_STATUS, PAYMENT_STATUS, USER_ROLE} = require("../
 const User = require("../models/user.model")
 const Show = require("../models/show.model")
 
+
 const createPayment = async (data) => {
   try {
     
@@ -35,7 +36,7 @@ const createPayment = async (data) => {
 
     //calculate how many minutes are remaining
     let minutes = Math.floor(((currentTime - bookingTime)/1000/60))
-    if(minutes > 5)
+    if(minutes > 500)
     {
       booking.status = BOOKING_STATUS.expired;
       await booking.save();

@@ -1,11 +1,14 @@
+const User = require("../models/user.model");
 const paymentService = require("../services/payment.service");
 const { BOOKING_STATUS, STATUS_CODES } = require("../utils/constraints");
 const {errorResponseBody, successResponseBody} = require("../utils/responsebody")
+const Movie = require("../models/movie.model");
+const Theatre = require("../models/theatre.model")
+const axios = require("axios");
 
 const create = async (req , res) => {
   try {
-    console.log("req body is here")
-    console.log(req.body);
+    
     const response =await paymentService.createPayment(req.body);
    // console.log(response);
     if(response.status == BOOKING_STATUS.expired)
@@ -22,9 +25,20 @@ const create = async (req , res) => {
       errorResponseBody.data = response;
       return res.status(STATUS_CODES.PAYMENT_REQUIRED).json (errorResponseBody)
     }
+    const user = await User.findById(response.userId)
+    const movie = await Movie.findById(response.movieId);
+    const theatre = await Theatre.findById(response.theatreId)
     successResponseBody.data = response;
     successResponseBody.message = "Booking completed successfully";
-    
+    console.log(response);
+    axios.post(process.env.NOTI_SERVICE + "/notiservice/api/v1/notifications",{
+      subject : "Your booking is successfull",
+      recepientEmails : [user.email],
+      content : `Your booking for ${movie.name} in ${theatre.name} for ${response.noOfSeats} seats on ${response.timings} is Successfull . Your booking id is ${response.id}`
+    })
+
+
+
     return res.status(STATUS_CODES.OK).json(successResponseBody)
   } catch (error) {
     
