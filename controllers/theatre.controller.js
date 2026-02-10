@@ -1,6 +1,7 @@
 const theatreService = require("../services/theatre.service");
 const {successResponseBody , errorResponseBody} = require("../utils/responsebody");
 const {STATUS_CODES} = require("../utils/constraints");
+const sendMail = require("../services/email.service")
 
 
 const create = async (req , res) => {
@@ -9,6 +10,11 @@ const create = async (req , res) => {
    
     successResponseBody.data = response;
     successResponseBody.message = "Successfully created the theatre"
+    sendMail(
+      "Successfully created a theatre" ,
+      req.user,
+      `You have successfully created a new theatre`
+    )
     return res.status(STATUS_CODES.CREATED).json(successResponseBody);
   } catch (error) {
     if(error.err)
