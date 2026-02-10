@@ -5,11 +5,11 @@ const {STATUS_CODES} = require("../utils/constraints");
 
 const create = async (req , res) => {
   try {
-    const response = await theatreService.createTheatre(req.body);
+    const response = await theatreService.createTheatre({...req.body , owner : req.user});
    
     successResponseBody.data = response;
     successResponseBody.message = "Successfully created the theatre"
-    return res.status(STATUS_CODES.OK).json(successResponseBody);
+    return res.status(STATUS_CODES.CREATED).json(successResponseBody);
   } catch (error) {
     if(error.err)
     {

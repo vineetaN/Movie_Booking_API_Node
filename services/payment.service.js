@@ -36,7 +36,7 @@ const createPayment = async (data) => {
 
     //calculate how many minutes are remaining
     let minutes = Math.floor(((currentTime - bookingTime)/1000/60))
-    if(minutes > 500)
+    if(minutes > 5)
     {
       booking.status = BOOKING_STATUS.expired;
       await booking.save();
