@@ -31,7 +31,7 @@ const create = async (req , res) => {
     successResponseBody.data = response;
     successResponseBody.message = "Booking completed successfully";
     console.log(response);
-    console.log("hello")
+    
    sendMail(
     "Your booking is Successfull" ,
     response.userId,
