@@ -27,6 +27,10 @@ bookingRoutes(app); //invoking booking routes
 showRoutes(app) //invoking show routes
 paymentRoutes(app) //invoking payment routes
 
+app.get('/' , (req,res) => {
+  res.send("Home")
+})
+
 app.listen(PORT , async ()=>{
   //this callback gets executed , once we successfully start the server on the given port
   console.log(`Server started on Port ${PORT}`);
