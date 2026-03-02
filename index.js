@@ -13,7 +13,8 @@ const showRoutes = require("./routes/show.routes")
 const paymentRoutes = require("./routes/payments.routes")
 
 env.config();
-const app = express();   //express object
+const app = express(); 
+const PORT = process.env.PORT || 3000;  //express object
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -26,9 +27,9 @@ bookingRoutes(app); //invoking booking routes
 showRoutes(app) //invoking show routes
 paymentRoutes(app) //invoking payment routes
 
-app.listen(process.env.PORT , async ()=>{
+app.listen(PORT , async ()=>{
   //this callback gets executed , once we successfully start the server on the given port
-  console.log(`Server started on Port ${process.env.PORT}`);
+  console.log(`Server started on Port ${PORT}`);
 
   try{
     if(process.env.NODE_ENV == "production")
